@@ -35,6 +35,7 @@ import {
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { generateKineticsData, generateHardwarePayload } from '../utils/thermalKinetics';
+import GemmaAssistant from './GemmaAssistant';
 
 export default function StepExecution({
   protocol,
@@ -1575,6 +1576,14 @@ export default function StepExecution({
           <RotateCw size={14} /> Synthesize Another Material
         </button>
       </div>
+
+      {/* Gemma: hint ladder */}
+      <GemmaAssistant
+        mode="hint"
+        title="Hint chahiye? (Gemma)"
+        context={`Experiment: ${protocol.name}. Current stage ${currentStepIdx + 1} of ${steps.length}: ${activeStep.name || 'n/a'} (${activeStep.operation || 'n/a'}). Target temperature: ${targetTemp} C. Live temperature: ${Number(simTemp).toFixed(1)} C. Target RPM: ${targetRpm}. Safe limit: ${protocol.safetyEnvelope?.maxTempC} C. Aborted: ${isAborted}. Paused: ${isPaused}.`}
+        fallback="Pehle dekho ki current stage ka target temperature aur RPM protocol ke hisaab se hai ya nahi."
+      />
 
       {/* ═════════════════════════════════════════════════════════════════════════
           JSON PAYLOAD MODAL

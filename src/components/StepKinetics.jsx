@@ -17,6 +17,7 @@ import {
   Info,
 } from 'lucide-react';
 import { generateKineticsData } from '../utils/thermalKinetics';
+import GemmaAssistant from './GemmaAssistant';
 
 export default function StepKinetics({ protocol, overrides, setOverrides, onNext, onBack }) {
   const [hoverIndex, setHoverIndex] = useState(null);
@@ -472,6 +473,14 @@ export default function StepKinetics({ protocol, overrides, setOverrides, onNext
         </div>
 
       </div>
+
+      {/* ── Gemma: result explain ── */}
+      <GemmaAssistant
+        mode="explain"
+        title="Is result ko samjho (Gemma)"
+        context={`Experiment: ${protocol.name}. Peak temperature: ${stats.peakTemp} C. Safe limit: ${safetyCeiling} C. Max RPM: ${stats.maxRpm}. Total time: ${stats.totalTimeMin} min. Safety passed: ${isSafetyPassed}. Violations: ${(stats.violations || []).map(v => v.message).join('; ') || 'none'}.`}
+        fallback={isSafetyPassed ? 'Peak temperature safe limit ke andar hai, isliye protocol safe hai.' : 'Peak temperature ya ramp rate safe limit se zyada hai. Setpoint kam karo.'}
+      />
 
       {/* ── Bottom Deploy & Navigation Bar ── */}
       <div className="notebook-card" style={{
